@@ -1,28 +1,35 @@
-import multiprocessing
 import time
-import random
-import string
-# Function to join a thousand random letters
-def join_random_letters():
-    letters = [random.choice(string.ascii_letters) for _ in range(1000)]
-    joined_letters = ''.join(letters)
-    print("Joined Letters Task Done")
-# Function to add a thousand random numbers
-def add_random_numbers():
-    numbers = [random.randint(1, 100) for _ in range(1000)]
-    total_sum = sum(numbers)
-    print("Add Numbers Task Done")
-# Measure the total time for both operations
-if __name__ == "__main__":
-    total_start_time = time.time()
-# Create processes for both functions
-process_letters = multiprocessing.Process(target=join_random_letters)
-process_numbers = multiprocessing.Process(target=add_random_numbers)
-# Start the processes
-process_letters.start()
-process_numbers.start()
-# Wait for all processes to complete
-process_letters.join()
-process_numbers.join()
-total_end_time = time.time()
-print(f"Total time taken: {total_end_time - total_start_time} seconds")
+import multiprocessing
+
+def calculate_partial_sum(start, end, result, lock):
+    partial_sum = sum(range(start, end + 1))
+    with lock: 
+        result.value += partial_sum
+
+def run_multiprocessing(n):
+    num_processes = 4  # Number of processes to use
+    
+    processes = []
+    result = multiprocessing.Value('d', 0.0) 
+    lock = multiprocessing.Lock()  
+    chunk_size = n // num_processes
+    
+    start_time = time.time()
+    
+    for i in range(num_processes):
+        start = i * chunk_size + 1
+        end = (i + 1) * chunk_size if i != num_processes - 1 else n
+        process = multiprocessing.Process(target=calculate_partial_sum, args=(start, end, result, lock))
+        processes.append(process)
+        process.start()
+    
+    for process in processes:
+        process.join()
+    
+    total_sum_multiprocess = result.value
+    end_time = time.time()
+    
+    execution_time_multiprocess = end_time - start_time
+    print("multiprocess case: ")
+    print(f"Sum: {int(total_sum_multiprocess)}")
+    print(f"Execution Time: {execution_time_multiprocess:.10f} seconds")
