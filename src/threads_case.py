@@ -13,12 +13,16 @@ def add_random_numbers():
     total_sum = sum(numbers)
     print("Add Numbers Task Done")
 # Measure the total time for both operations
-def run_threads():
+def run_threads(num_letters = ):
     total_start_time = time.time()
     # Create threads for both functions
-    starts
-    thread_letters_1 = threading.Thread(target=join_random_letters)
-    thread_letters_2 = threading.Thread(target=join_random_letters)
+    start1 = 0
+    end1 = num_letters // 2
+    start2 = num_letters // 2
+    end2 = num_letters
+    
+    thread_letters_1 = threading.Thread(target=join_random_letters, start1, end1)
+    thread_letters_2 = threading.Thread(target=join_random_letters,start2,end2)
     #thread_numbers_1 = threading.Thread(target=add_random_numbers)
     #thread_numbers_2 = threading.Thread(target=add_random_numbers)
     # Start the threads

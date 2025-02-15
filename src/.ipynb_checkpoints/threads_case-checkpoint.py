@@ -16,6 +16,7 @@ def add_random_numbers():
 def run_threads():
     total_start_time = time.time()
     # Create threads for both functions
+    starts
     thread_letters_1 = threading.Thread(target=join_random_letters)
     thread_letters_2 = threading.Thread(target=join_random_letters)
     #thread_numbers_1 = threading.Thread(target=add_random_numbers)
