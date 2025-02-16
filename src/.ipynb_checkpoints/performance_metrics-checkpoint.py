@@ -1,29 +1,44 @@
-from src.sequential_case import *
-from src.threads_case import *
-from src.multiprocessing_case import *
+import time
+from src.sequential_case import run_sequential
+from src.threads_case import run_threads
+from src.multiprocessing_case import run_multiprocessing
 
-def calculate_dynamic_f(T_seq, T_thread):
-    return 1 - (T_seq - T_thread) / T_seq if T_seq > 0 else 0
-
-def calculate_performance_metrics(T_seq, T_thread, T_process, num_threads, num_processes):
-    f = calculate_dynamic_f(T_seq, T_thread)
-    S_thread = T_seq / T_thread
-    S_process = T_seq / T_process
-    E_thread = S_thread / num_threads
-    E_process = S_process / num_processes
-    S_Amdahl_thread = 1 / ((1 - f) + (f / num_threads))
-    S_Amdahl_process = 1 / ((1 - f) + (f / num_processes))
-    S_Gustafson_thread = num_threads - (num_threads - 1) * (1 - f)
-    S_Gustafson_process = num_processes - (num_processes - 1) * (1 - f)
+def compute_metrics(n):
+    # Run sequential case
+    start_seq = time.time()
+    run_sequential(n)
+    end_seq = time.time()
+    T1 = end_seq - start_seq
     
-    return {
-        "Parallel Fraction (f)": f,
-        "Speedup (Threading)": S_thread,
-        "Speedup (Multiprocessing)": S_process,
-        "Efficiency (Threading)": E_thread,
-        "Efficiency (Multiprocessing)": E_process,
-        "Amdahl's Speedup (Threading)": S_Amdahl_thread,
-        "Amdahl's Speedup (Multiprocessing)": S_Amdahl_process,
-        "Gustafson's Speedup (Threading)": S_Gustafson_thread,
-        "Gustafson's Speedup (Multiprocessing)": S_Gustafson_process
+    # Run threading case
+    start_thread = time.time()
+    run_threads(n)
+    end_thread = time.time()
+    Tp_thread = end_thread - start_thread
+    
+    # Run multiprocessing case
+    start_process = time.time()
+    run_multiprocessing(n)
+    end_process = time.time()
+    Tp_process = end_process - start_process
+    
+    p = 4  # Number of threads/processes
+    f = 0.9  # Assumed parallelizable fraction
+    
+    # Compute metrics
+    speedup_thread = T1 / Tp_thread
+    efficiency_thread = speedup_thread / p
+    amdahl_speedup = 1 / ((1 - f) + (f / p))
+    gustafson_speedup = p - (p - 1) * (1 - f)
+    
+    speedup_process = T1 / Tp_process
+    efficiency_process = speedup_process / p
+    
+    print("Performance Metrics:")
+    print(f"Speedup (Threads): {speedup_thread:.4f}")
+    print(f"Efficiency (Threads): {efficiency_thread:.4f}")
+    print(f"Amdahl's Law Speedup: {amdahl_speedup:.4f}")
+    print(f"Gustafson's Law Speedup: {gustafson_speedup:.4f}")
+    print(f"Speedup (Multiprocessing): {speedup_process:.4f}")
+    print(f"Efficiency (Multiprocessing): {efficiency_process:.4f}")
     }

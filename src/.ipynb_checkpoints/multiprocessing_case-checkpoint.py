@@ -33,3 +33,4 @@ def run_multiprocessing(n):
     print("multiprocess case: ")
     print(f"Sum: {int(total_sum_multiprocess)}")
     print(f"Execution Time: {execution_time_multiprocess:.10f} seconds")
+    return total_sum_multiprocess

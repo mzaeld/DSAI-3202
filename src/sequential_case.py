@@ -17,4 +17,5 @@ def run_sequential(n):
     print("sequential case: ")
     print(f"Sum: {total_sum_seq}")
     print(f"Execution Time: {execution_time_seq:.10f} seconds")
+    return execution_time_seq
     

@@ -32,7 +32,7 @@ def run_threads(n):
     print("threads case: ")
     print(f"Sum: {total_sum_thread}")
     print(f"Execution Time: {execution_time_thread:.10f} seconds")
-    
+    return execution_time_thread
 
 
 
