@@ -2,10 +2,28 @@ import time
 import threading
 
 def calculate_partial_sum(start, end, result, index):
+    """
+    Calculates the sum of integers from start to end and stores the result in a shared list.
+
+    Arguments:
+    start (int): The starting number of the range.
+    end (int): The ending number of the range.
+    result (list): A shared list to store partial sums.
+    index (int): The index in the result list where the partial sum will be stored.
+    """
     total = sum(range(start, end + 1))
     result[index] = total
 
 def run_threads(n):
+    """
+    Executes the sum calculation using multiple threads.
+
+    Arguments:
+    n (int): The upper limit of the range for which the sum is calculated.
+
+    Returns:
+    float: The execution time taken to compute the sum using threading.
+    """
     num_threads = 4  # Number of threads to use
     
     threads = []
@@ -33,6 +51,7 @@ def run_threads(n):
     print(f"Sum: {total_sum_thread}")
     print(f"Execution Time: {execution_time_thread:.10f} seconds")
     return execution_time_thread
+
 
 
 

@@ -2,11 +2,29 @@ import time
 import multiprocessing
 
 def calculate_partial_sum(start, end, result, lock):
+    """
+    Calculates the sum of integers from start to end and safely updates a shared result.
+
+    Arguments:
+    start (int): The starting number of the range.
+    end (int): The ending number of the range.
+    result (multiprocessing.Value): A shared variable to store the total sum.
+    lock (multiprocessing.Lock): A lock to synchronize access to the shared result.
+    """
     partial_sum = sum(range(start, end + 1))
     with lock: 
         result.value += partial_sum
 
 def run_multiprocessing(n):
+    """
+    Executes the sum calculation using multiple processes.
+
+    Arguments:
+    n (int): The upper limit of the range for which the sum is calculated.
+
+    Returns:
+    float: The execution time taken to compute the sum using multiprocessing.
+    """
     num_processes = 4  # Number of processes to use
     
     processes = []
@@ -33,4 +51,4 @@ def run_multiprocessing(n):
     print("multiprocess case: ")
     print(f"Sum: {int(total_sum_multiprocess)}")
     print(f"Execution Time: {execution_time_multiprocess:.10f} seconds")
-    return total_sum_multiprocess
+    return execution_time_multiprocess
