@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+
 import sys
+import os
 import time
 import threading
 from src.sync_utils import lock
@@ -20,7 +21,12 @@ def update_display():
     """Updates the console display with latest readings."""
     while True:
         with lock:
-            sys.stdout.write("\033[H\033[J")  # Clear screen (Linux ANSI code)
+            # Debugging - Check if data is actually updating
+            print(f"DEBUG - latest_temperatures: {latest_temperatures}")
+            print(f"DEBUG - temperature_averages: {temperature_averages}")
+
+            os.system("cls" if os.name == "nt" else "clear")  # Cross-platform clear screen
+            
             print("Current temperatures:")
             print("Latest Temperatures:", end=" ")
             for i in range(3):
@@ -29,6 +35,8 @@ def update_display():
             print("\n")
             for i in range(3):
                 avg = temperature_averages.get(i, "--")
-                print(f"Sensor {i} Average: {avg:.2f}°C" if avg != "--" else f"Sensor {i} Average: --°C")
+                print(f"Sensor {i} Average: {avg:.2f}°C" if isinstance(avg, (int, float)) else f"Sensor {i} Average: --°C")
 
         time.sleep(5)  # Refresh every 5 seconds
+
+
