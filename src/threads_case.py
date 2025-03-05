@@ -1,40 +1,24 @@
-import threading
-import time
 import random
-import string
-# Function to join a thousand random letters
-def join_random_letters(start = 0, end = 1000):
-    letters = [random.choice(string.ascii_letters) for _ in range(start,end)]
-    joined_letters = ''.join(letters)
-    print("Joined Letters Task Done")
-# Function to add a thousand random numbers
-def add_random_numbers():
-    numbers = [random.randint(1, 100) for _ in range(1000)]
-    total_sum = sum(numbers)
-    print("Add Numbers Task Done")
-# Measure the total time for both operations
-def run_threads(num_letters = ):
-    total_start_time = time.time()
-    # Create threads for both functions
-    start1 = 0
-    end1 = num_letters // 2
-    start2 = num_letters // 2
-    end2 = num_letters
-    
-    thread_letters_1 = threading.Thread(target=join_random_letters, start1, end1)
-    thread_letters_2 = threading.Thread(target=join_random_letters,start2,end2)
-    #thread_numbers_1 = threading.Thread(target=add_random_numbers)
-    #thread_numbers_2 = threading.Thread(target=add_random_numbers)
-    # Start the threads
-    thread_letters_1.start()
-    thread_letters_2.start()
-    #thread_numbers_1.start()
-    #thread_numbers_2.start()
-    # Wait for all threads to complete
-    thread_letters_1.join()
-    thread_letters_2.join()
-    total_end_time = time.time()
-    print(f"Total time taken for threads: {total_end_time - total_start_time} seconds")
+import time
+import threading
+
+def generate_chars():
+    return ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=1000))
+
+def generate_numbers():
+    return sum(random.randint(0, 100) for _ in range(1000))
+
+def run_threads():
+    start_time = time.time()
+    t1 = threading.Thread(target=generate_chars)
+    t2 = threading.Thread(target=generate_numbers)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+    end_time = time.time()
+    print(f"Threaded Execution Time: {end_time - start_time:.5f} seconds")
+    return end_time - start_time
 
 
 
