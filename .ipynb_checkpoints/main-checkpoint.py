@@ -1,38 +1,13 @@
+from mpi4py import MPI
 
-import threading
-import time
-from src.sensor import simulate_sensor, latest_temperatures
-from src.processor import process_temperatures, add_to_queue
-from src.display import initialize_display, update_display
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
 
-def main():
-    num_sensors = 3
-    sensor_threads = []
-    processor_threads = []
+if rank == 0:
+    data = {'a': 7, 'b': 3.14}  # Fixed quotes
+    comm.send(data, dest=1, tag=11)
+    print('On process 0, data sending:', data)
+elif rank == 1:
+    data = comm.recv(source=0, tag=11)
+    print('On process 1, data received:', data)  # Fixed print statement
 
-    # Start sensor threads
-    for i in range(num_sensors):
-        t = threading.Thread(target=simulate_sensor, args=(i,), daemon=True)
-        sensor_threads.append(t)
-        t.start()
-
-    # Start processing threads
-    for i in range(num_sensors):
-        t = threading.Thread(target=process_temperatures, args=(i,), daemon=True)
-        processor_threads.append(t)
-        t.start()
-
-    # Start display
-    initialize_display()
-    display_thread = threading.Thread(target=update_display, daemon=True)
-    display_thread.start()
-
-    # Keep main thread alive
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\nShutting down gracefully...")
-
-if __name__ == "__main__":
-    main()
