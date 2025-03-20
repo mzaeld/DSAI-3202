@@ -10,13 +10,6 @@ def time_sequential(numbers):
     end = time.time()
     return results, end - start
 
-'''def time_multiprocessing(numbers):
-    """Multiprocessing with a separate process for each number."""
-    start = time.time()
-    with multiprocessing.Pool(processes=len(numbers)) as pool:
-        results = pool.map(square, numbers)
-    end = time.time()
-    return results, end - start'''
 def time_multiprocessing(numbers):
     start_time = time.time()
     processes = []
@@ -41,6 +34,17 @@ def time_pool_map(numbers):
     end = time.time()
     return results, end - start
 
+#async
+def time_pool_map_async(numbers):
+    """Multiprocessing using Pool.map_async() for non-blocking execution."""
+    start = time.time()
+    with multiprocessing.Pool() as pool:
+        result_obj = pool.map_async(square, numbers)
+        results = result_obj.get()  # Waits for results
+    end = time.time()
+    return results, end - start
+    
+#sync
 def time_pool_apply(numbers):
     """Multiprocessing using Pool.apply() for each number."""
     start = time.time()
@@ -49,22 +53,15 @@ def time_pool_apply(numbers):
     end = time.time()
     return results, end - start
 
-'''def time_concurrent_futures(numbers):
-    """Multiprocessing using concurrent.futures.ProcessPoolExecutor."""
+#async
+def time_pool_apply_async(numbers):
+    """Multiprocessing using Pool.apply_async() for non-blocking execution."""
     start = time.time()
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        results = list(executor.map(square, numbers))
+    with multiprocessing.Pool() as pool:
+        result_objs = [pool.apply_async(square, (n,)) for n in numbers]
+        results = [obj.get() for obj in result_objs]  # Collect results
     end = time.time()
     return results, end - start
-
-def time_concurrent_futures(numbers):
-    start_time = time.time()
-
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        results = list(executor.map(square, numbers))
-
-    end_time = time.time()
-    return results, end_time - start_time'''
 
 def time_concurrent_futures(numbers):
     start_time = time.time()
