@@ -1,52 +1,35 @@
-import time
-import random
-from src.square_functions import (
-    sequential_squares, multiprocessing_squares,
-    pool_map_squares, pool_apply_squares,
-    pool_apply_async_squares, process_pool_executor_squares
+from src.square import square
+from src.timing import (
+    time_sequential,
+    time_multiprocessing,
+    time_pool_map,
+    time_pool_apply,
+    time_concurrent_futures
 )
+import random
 
-def run_benchmark(numbers, label):
-    """Runs all methods and prints execution times."""
-    print(f"\n=== Benchmarking {label} ===")
-
-    start = time.time()
-    sequential_squares(numbers)
-    print(f"Sequential: {time.time() - start:.4f} sec")
-
-    start = time.time()
-    multiprocessing_squares(numbers)
-    print(f"Multiprocessing (one process per number): {time.time() - start:.4f} sec")
-
-    start = time.time()
-    pool_map_squares(numbers)
-    print(f"Multiprocessing Pool (map, synchronous): {time.time() - start:.4f} sec")
-
-    start = time.time()
-    pool_apply_squares(numbers)
-    print(f"Multiprocessing Pool (apply, synchronous): {time.time() - start:.4f} sec")
-
-    start = time.time()
-    pool_apply_async_squares(numbers)
-    print(f"Multiprocessing Pool (apply_async, asynchronous): {time.time() - start:.4f} sec")
-
-    start = time.time()
-    process_pool_executor_squares(numbers)
-    print(f"ProcessPoolExecutor (synchronous): {time.time() - start:.4f} sec")
-
+def main():
+    numbers = [random.randint(1, 100) for _ in range(10**6)]
+    
+    print("Timing sequential:")
+    _, time_seq = time_sequential(numbers)
+    print(f"Sequential time: {time_seq:.4f} seconds\n")
+    
+    '''print("Timing multiprocessing (one process per number):")
+    _, time_multi = time_multiprocessing(numbers)  # Limited for performance
+    print(f"Multiprocessing time: {time_multi:.4f} seconds\n")'''
+    
+    print("Timing Pool.map:")
+    _, time_map = time_pool_map(numbers)
+    print(f"Pool.map() time: {time_map:.4f} seconds\n")
+    
+    '''print("Timing Pool.apply:")
+    _, time_apply = time_pool_apply(numbers)  # Limited for performance
+    print(f"Pool.apply() time: {time_apply:.4f} seconds\n")'''
+    
+    print("Timing concurrent.futures:")
+    _, time_futures = time_concurrent_futures(numbers)
+    print(f"ProcessPoolExecutor time: {time_futures:.4f} seconds\n")
+    
 if __name__ == "__main__":
-    NUMBERS_1M = [random.randint(1, 100) for _ in range(10**6)]
-    NUMBERS_10M = [random.randint(1, 100) for _ in range(10**7)]
-
-    run_benchmark(NUMBERS_1M, "1,000,000 numbers")
-    run_benchmark(NUMBERS_10M, "10,000,000 numbers")
-
-
-
-        
-
-
-
-
-
-
+    main()
