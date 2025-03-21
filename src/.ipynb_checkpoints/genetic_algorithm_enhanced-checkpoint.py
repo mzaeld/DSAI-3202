@@ -40,7 +40,7 @@ size = comm.Get_size()
 start_time = time.time()
 
 # Load the distance matrix
-distance_matrix = pd.read_csv('city_distances_extended.csv').to_numpy()
+distance_matrix = pd.read_csv('city_distances.csv').to_numpy()
 
 # Parameters
 num_nodes = distance_matrix.shape[0]
@@ -63,7 +63,7 @@ stagnation_counter = 0
 # Main GA loop
 for generation in range(num_generations):
     # Each process evaluates fitness for its subset of the population
-    fitness_values = np.array([calculate_fitness(route, distance_matrix) for route in population])
+    fitness_values = np.array([-calculate_fitness(route, distance_matrix) for route in population])
     
     # Gather fitness values from all processes
     all_fitness_values = np.empty(population_size, dtype=np.float64) if rank == 0 else None

@@ -43,7 +43,7 @@ start_time = time.time()
 # Rank 0 loads the distance matrix and distributes it
 distance_matrix = None
 if rank == 0:
-    distance_matrix = pd.read_csv('city_distances_extended.csv').to_numpy()
+    distance_matrix = pd.read_csv('city_distances.csv').to_numpy()
 
 distance_matrix = comm.bcast(distance_matrix, root=0)  # Broadcast to all ranks
 
@@ -71,7 +71,7 @@ stagnation_counter = 0
 # Main GA loop
 for generation in range(num_generations):
     # Evaluate fitness locally
-    local_fitness_values = np.array([calculate_fitness(route, distance_matrix) for route in local_population])
+    local_fitness_values = np.array([-calculate_fitness(route, distance_matrix) for route in local_population])
 
     # Gather fitness values at Rank 0
     all_fitness_values = comm.gather(local_fitness_values, root=0)
@@ -127,7 +127,7 @@ for generation in range(num_generations):
         print(f"Generation {generation}: Best calculate_fitness = {current_best_calculate_fitness}")
 
 # Final gather to determine best solution
-local_fitness_values = np.array([calculate_fitness(route, distance_matrix) for route in local_population])
+local_fitness_values = np.array([-calculate_fitness(route, distance_matrix) for route in local_population])
 all_fitness_values = comm.gather(local_fitness_values, root=0)
 all_population = comm.gather(local_population, root=0)
 

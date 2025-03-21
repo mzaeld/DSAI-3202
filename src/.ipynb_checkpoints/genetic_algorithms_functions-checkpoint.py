@@ -23,7 +23,7 @@ def calculate_fitness(route,
             return -1e6  # Penalize infeasible routes immediately
         total_distance += dist
         
-    total_distance = total_distance * 1
+    total_distance = total_distance * -1
     return total_distance
 
 
