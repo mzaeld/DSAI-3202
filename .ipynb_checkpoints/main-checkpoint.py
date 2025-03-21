@@ -35,7 +35,7 @@ def run_multiprocessing_tests_6():
 
     print("Timing Pool.apply:")
     _, time_apply = time_pool_apply(numbers)
-    print(f"Pool.apply_async() time: {time_apply:.4f} seconds\n")
+    print(f"Pool.apply() time: {time_apply:.4f} seconds\n")
 
     print("Timing Pool.apply_async:")
     _, time_apply_async = time_pool_apply_async(numbers)
@@ -64,18 +64,18 @@ def run_multiprocessing_tests_7():
     print("Timing Pool.map_async:")
     _, time_map_async = time_pool_map_async(numbers)
     print(f"Pool.map_async() time: {time_map_async:.4f} seconds\n")
-    '''
+    
     print("Timing Pool.apply:")
     _, time_apply = time_pool_apply(numbers)
-    print(f"Pool.apply_async() time: {time_apply:.4f} seconds\n")'''
-
+    print(f"Pool.apply_async() time: {time_apply:.4f} seconds\n")
+'''
     print("Timing Pool.apply_async:")
     _, time_apply_async = time_pool_apply_async(numbers)
     print(f"Pool.apply_async() time: {time_apply_async:.4f} seconds\n")
     
     print("Timing concurrent.futures:")
     _, time_futures = time_concurrent_futures(numbers)
-    print(f"ProcessPoolExecutor time: {time_futures:.4f} seconds\n")
+    print(f"ProcessPoolExecutor time: {time_futures:.4f} seconds\n")'''
 
 
 def run_semaphore_test():

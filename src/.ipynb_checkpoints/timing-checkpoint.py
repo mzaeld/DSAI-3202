@@ -45,6 +45,7 @@ def time_pool_map_async(numbers):
     return results, end - start
     
 #sync
+
 def time_pool_apply(numbers):
     """Multiprocessing using Pool.apply() for each number."""
     start = time.time()

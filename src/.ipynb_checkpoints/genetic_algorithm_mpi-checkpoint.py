@@ -6,6 +6,34 @@ from genetic_algorithms_functions import calculate_fitness, \
     select_in_tournament, order_crossover, mutate, \
     generate_unique_population
 
+"""
+Parallel Genetic Algorithm for Solving the Traveling Salesman Problem (TSP) using MPI.
+
+This program implements a genetic algorithm to find an optimal route for the TSP.
+It distributes the computation across multiple processes using MPI for parallel execution.
+
+Features:
+- Uses genetic algorithm operators (selection, crossover, mutation) to evolve solutions.
+- Parallelized with MPI for performance improvement.
+- Handles population stagnation by regenerating new individuals.
+- Collects and distributes fitness values across processes to maintain synchronization.
+
+Parameters:
+- population_size: Number of individuals in the population.
+- num_generations: Number of generations to evolve the population.
+- mutation_rate: Probability of mutation for offspring.
+- stagnation_limit: Number of generations without improvement before regenerating population.
+
+Inputs:
+- city_distances_extended.csv: Distance matrix of cities for the TSP.
+
+Outputs:
+- Best solution found.
+- Total distance of the best solution.
+- Execution time of the algorithm.
+
+"""
+
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
@@ -15,7 +43,7 @@ start_time = time.time()
 # Rank 0 loads the distance matrix and distributes it
 distance_matrix = None
 if rank == 0:
-    distance_matrix = pd.read_csv('city_distances.csv').to_numpy()
+    distance_matrix = pd.read_csv('city_distances_extended.csv').to_numpy()
 
 distance_matrix = comm.bcast(distance_matrix, root=0)  # Broadcast to all ranks
 
