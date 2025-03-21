@@ -73,7 +73,8 @@ Part II:
 - Mutation: Reassigning the cities between vehiclesv instead of changing order within the route
 - One city per vehicle
 
-Results:
-
+Results(using the extended csv):
+mpi: Execution Time: 65.0891 seconds
+mpi_improved - Execution Time: 13.2652 seconds
 
 
