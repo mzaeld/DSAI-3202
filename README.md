@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Maze Explorer Game
 
 A simple maze exploration game built with Pygame where you can either manually navigate through a maze or watch an automated solver find its way to the exit.
@@ -111,3 +112,7 @@ Based on the result that we have obtained, there is a drastic change in number o
 
 
  
+=======
+#description
+This repository is for parallel and distributed computing for DSAI3202
+>>>>>>> b7f7202f26ad227a67979c0f0ddeb14cc6378625
